@@ -1,11 +1,19 @@
-<div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 mt-6">
+<div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 mt-12">
     <template x-for="(recipe,index) in filteredRecipes">
         <div 
-        class="rounded-3xl overflow-hidden shadow-2xl hover:[&_img]:scale-110 hover:[&_img]:opacity-50 cursor-pointer relative"
+        class="rounded-3xl overflow-hidden shadow-2xl hover:[&_img]:scale-110 hover:[&_img]:opacity-50 cursor-pointer relative transition-all"
         @click="(e)=>{
             if(!e.target.closest('.fav-button')){
                 setActiveRecipe(index);
             }
+        }"
+        x-data="{
+            shown: false
+        }"
+        x-intersect.full="shown = true"
+        x-bind:class="{
+            'opacity-0 scale-0':!shown,
+            'opacity-100 scale-100':shown
         }">
             <div class="overflow-hidden bg-black">
                 <img x-bind:src="recipe.imageUrl" alt="Image d'illustration de la recette" class="w-full aspect-[4/3] transition-all duration-300 object-cover"/>
@@ -14,7 +22,14 @@
                 <div class="flex justify-between items-center flex-wrap">
                     <h3>
                         <span x-text="recipe.title" class="font-bold underline"></span>
-                        <span x-text="`(${recipe.difficulty})`" class="text-sm"></span>
+                        <span 
+                        x-text="`(${recipe.difficulty})`" 
+                        class="text-sm"
+                        x-bind:class="{
+                            'text-green-500': recipe.difficulty === 'facile',
+                            'text-orange-500': recipe.difficulty === 'moyenne',
+                            'text-red-500': recipe.difficulty === 'difficile',
+                        }"></span>
                     </h3>
                     <div 
                     x-text="recipe.category"

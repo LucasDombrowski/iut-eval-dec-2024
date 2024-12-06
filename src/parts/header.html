@@ -2,18 +2,18 @@
     <div class="uppercase font-bold text-xl z-50">
         évaluation
     </div>
-    <nav class="bg-white fixed w-full h-full top-0 left-0 z-40 flex justify-center items-center transition-all flex-col md:static md:translate-x-0 md:flex-row gap-6 md:gap-8 md:w-fit" 
+    <nav class="bg-white fixed w-full h-full top-0 left-0 z-40 flex justify-center items-center transition-all flex-col md:static md:translate-x-0 md:flex-row gap-6 md:gap-12 md:w-fit" 
     x-bind:class="{
         'translate-x-full':!active
     }">
-        <ul class="flex flex-col items-center text-2xl font-bold gap-4 capitalize md:flex-row md:text-lg" x-data="HeaderNavigation()">
+        <ul class="flex flex-col items-center text-2xl font-bold gap-4 capitalize md:flex-row md:text-base md:gap-8" x-data="HeaderNavigation()">
             <template x-for="link in links">
                 <li>
                     <a x-bind:href="link.href" x-text="link.label" class="block relative before:content-[''] before:absolute before:top-full before:left-0 before:w-full before:h-px before:bg-black before:scale-x-0 before:transition-all hover:before:scale-x-100"></a>
                 </li>
             </template>
         </ul>
-        <div>
+        <div class="md:text-sm">
             Nombre total de recettes : <span x-text="recipes.length" class="font-bold"></span>
         </div>
     </nav>

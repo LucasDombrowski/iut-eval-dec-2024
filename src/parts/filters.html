@@ -1,63 +1,79 @@
-<div class="mb-3 flex flex-col gap-3 lg:flex-row flex-wrap lg:gap-6">
-    <div class="flex items-center gap-3 w-full lg:w-fit">
-        <label class="font-bold" for="title">
-            Recherche :
-        </label>
-        <input type="text" name="title" id="title" placeholder="Nom de la recette..." x-model="filters.title" class="grow border-b border-black outline-none lg:max-w-[300px]"/>
-    </div>
-    <div class="flex items-center gap-3">
-        <label for="difficulty" class="font-bold">
-            Difficulté :
-        </label>
-        <select 
-        x-model="filters.difficulty" 
-        name="difficulty" 
-        id="difficulty"
-        class="grow bg-white text-blue-500 lg:max-w-[300px]"
-        >
-            <option value="null">Toutes</option>
-            <template x-for="difficulty in difficulties">
-                <option x-text="difficulty" x-bind:value="difficulty"></option>
-            </template>
-        </select>
-    </div>
-    <div class="flex items-center gap-3">
-        <label for="category" class="font-bold">
-            Catégorie :
-        </label>
-        <select 
-        x-model="filters.category" 
-        name="category" 
-        id="category"
-        class="grow bg-white text-blue-500 lg:max-w-[300px]"
-        >
-            <option value="null">Toutes</option>
-            <template x-for="category in categories">
-                <option x-text="category" x-bind:value="category"></option>
-            </template>
-        </select>
-    </div>
-    <div class="flex items-center gap-3">
-        <label for="timeInterval" class="font-bold">
-            Durée :
-        </label>
-        <select 
-        x-model="filters.timeInterval" 
-        name="timeInterval" 
-        id="timeInterval"
-        class="grow bg-white text-blue-500 lg:max-w-[300px]"
-        >
-            <option value="null">Toutes</option>
-            <template x-for="timeInterval in timeIntervals">
-                <option x-text="timeInterval.label" x-bind:value="timeInterval.slug"></option>
-            </template>
-        </select>
-    </div>
-    <div class="flex items-center gap-2">
-        <label class="font-bold" for="onlyFavorites">
-            Favoris uniquement ?
-        </label>
-        <input type="checkbox" x-model="filters.onlyFavorites" name="onlyFavorites" id="onlyFavorites">
+<div 
+class="mb-3"
+x-data="{
+    'selects' : [
+        {
+            'label': 'Difficulté',
+            'slug':'difficulty',
+            'options': difficulties.map((difficulty)=>{
+                return {
+                    'label': difficulty,
+                    'value': difficulty
+                }
+            })
+        },
+        {
+            'label': 'Catégorie',
+            'slug':'category',
+            'options': categories.map((category)=>{
+                return {
+                    'label': category,
+                    'value': category
+                }
+            })
+        },
+        {
+            'label': 'Durée',
+            'slug':'timeInterval',
+            'options': timeIntervals.map((timeInterval)=>{
+                return {
+                    'label': timeInterval.label,
+                    'value': timeInterval.slug
+                }
+            })
+        }
+    ],
+    'displayFilter': false
+}">
+    <button class="flex items-center gap-3 font-bold bg-blue-500 text-white px-6 py-1 transition-all hover:opacity-50" @click="()=>{
+        displayFilter = !displayFilter
+    }">
+        <span>Filtres</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="transition-all" viewBox="0 0 16 16" x-bind:class="{
+            'rotate-90':displayFilter
+        }">
+            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+        </svg>
+    </button>
+    <div class="flex flex-col gap-3 lg:flex-row flex-wrap lg:gap-6 mt-6" x-show="displayFilter" x-transition.opacity>
+        <div class="flex items-center gap-3 w-full lg:w-fit">
+            <label class="font-bold" for="title">
+                Recherche :
+            </label>
+            <input type="text" name="title" id="title" placeholder="Nom de la recette..." x-model="filters.title" class="grow border-b border-black outline-none lg:max-w-[300px]"/>
+        </div>
+    
+        <template x-for="select in selects">
+            <div class="flex items-center gap-3">
+                <label x-bind:for="select.slug" x-text="`${select.label} :`" class="font-bold"></label>
+                <select
+                x-model="filters[select.slug]"
+                x-bind:name="select.slug"
+                x-bind:id="select.slug"
+                class="grow bg-white border-b border-black capitalize">
+                    <option value="null" class="text-blue-500">Toutes</option>
+                    <template x-for="option in select.options">
+                        <option x-text="option.label" x-bind:value="option.value" class="text-blue-500"></option>
+                    </template>
+                </select>
+            </div>
+        </template>
+        <div class="flex items-center gap-2">
+            <label class="font-bold" for="onlyFavorites">
+                Favoris uniquement ?
+            </label>
+            <input type="checkbox" x-model="filters.onlyFavorites" name="onlyFavorites" id="onlyFavorites">
+        </div>
     </div>
 
 </div>

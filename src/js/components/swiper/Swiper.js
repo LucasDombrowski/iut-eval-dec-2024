@@ -7,7 +7,6 @@ export default function Swiper(items = []){
             this.currentSlideIndex = activeIndex;
         },
         getProgressPercentage(){
-            console.log(this.currentSlideIndex/(items.length-1))*100;
             return (this.currentSlideIndex/(items.length-1))*100;
         }
     }
