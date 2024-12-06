@@ -6,3 +6,8 @@
     opacity: 0.5;
     cursor: default;
 }
+
+*{
+    scrollbar-width: thin;
+    scrollbar-color: rgb(59 130 246);
+}

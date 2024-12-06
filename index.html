@@ -7,9 +7,10 @@
     <title>Vite App</title>
 </head>
 <body>
+<!--Setup a watcher to automatically trigger the required methods to update the available items-->
 <div id="app" x-data="Recipes($persist([]))" x-init="$watch('filters',()=>handleFiltersChanges())">
     <load src="./src/parts/header.html"/>
-    <main class="px-6">
+    <main class="px-6 mb-24">
         <div class="max-w-[1280px] mx-auto">
             <h2 class="font-bold text-3xl mb-6">Recettes <span x-text="`(${filteredRecipes.length} recettes)`" class="text-base"></span></h2>
             <load src="./src//parts/filters.html"/>

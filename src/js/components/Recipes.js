@@ -4,6 +4,7 @@ export default function Recipes(favorites){
     return {
         recipes: static_recipes.recipes,
         filteredRecipes : static_recipes.recipes,
+        /* The recipe that is currently shown in the lightbox */
         activeRecipe : static_recipes[0],
         difficulties : [],
         categories : [],
@@ -38,6 +39,7 @@ export default function Recipes(favorites){
                 }
             }
         ],
+        /*Handle the lightbox visibility*/
         showLightbox: false,
         init(){
             this.getDifficulties();
@@ -54,6 +56,7 @@ export default function Recipes(favorites){
             this.difficulties = Array.from(new Set([...this.recipes].map(({difficulty})=>difficulty)))
         },
         handleFiltersChanges(){
+            /* Check if one of the filter value is set to the STRING value 'null'*/
             Object.entries({...this.filters}).forEach(([key,value])=>{
                 if(value==="null"){
                     this.filters[key] = null
