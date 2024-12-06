@@ -4,7 +4,7 @@ x-data="{
     'selects' : [
         {
             'label': 'Difficulté',
-            'slug':'difficulty',
+            'slug':'difficulties',
             'options': difficulties.map((difficulty)=>{
                 return {
                     'label': difficulty,
@@ -14,7 +14,7 @@ x-data="{
         },
         {
             'label': 'Catégorie',
-            'slug':'category',
+            'slug':'categories',
             'options': categories.map((category)=>{
                 return {
                     'label': category,
@@ -24,7 +24,7 @@ x-data="{
         },
         {
             'label': 'Durée',
-            'slug':'timeInterval',
+            'slug':'timeIntervals',
             'options': timeIntervals.map((timeInterval)=>{
                 return {
                     'label': timeInterval.label,
@@ -35,7 +35,7 @@ x-data="{
     ],
     'displayFilter': false
 }">
-    <button class="flex items-center gap-3 font-bold bg-blue-500 text-white px-6 py-1 transition-all hover:opacity-50" @click="()=>{
+    <button class="flex items-center gap-3 font-bold bg-black text-white px-6 py-1 transition-all hover:opacity-50 rounded-3xl" @click="()=>{
         displayFilter = !displayFilter
     }">
         <span>Filtres</span>
@@ -45,32 +45,36 @@ x-data="{
             <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
         </svg>
     </button>
-    <div class="flex flex-col gap-3 lg:flex-row flex-wrap lg:gap-6 mt-6" x-show="displayFilter" x-transition.opacity>
+    <div class="flex flex-col gap-6 mt-6" x-show="displayFilter" x-transition.opacity>
         <div class="flex items-center gap-3 w-full lg:w-fit">
-            <label class="font-bold" for="title">
+            <label class="font-bold mr-3" for="title">
                 Recherche :
             </label>
-            <input type="text" name="title" id="title" placeholder="Nom de la recette..." x-model="filters.title" class="grow border-b border-black outline-none lg:max-w-[300px]"/>
+            <input type="text" name="title" id="title" placeholder="Nom de la recette..." x-model="filters.title" class="grow border-b border-black outline-none lg:max-w-[300px] py-2 rounded-full border border-black/25 px-4 text-sm"/>
         </div>
-    
         <template x-for="select in selects">
-            <div class="flex items-center gap-3">
-                <label x-bind:for="select.slug" x-text="`${select.label} :`" class="font-bold"></label>
-                <select
-                x-model="filters[select.slug]"
-                x-bind:name="select.slug"
-                x-bind:id="select.slug"
-                class="grow bg-white border-b border-black capitalize">
-                    <option value="null" class="text-blue-500">Toutes</option>
-                    <template x-for="option in select.options">
-                        <option x-text="option.label" x-bind:value="option.value" class="text-blue-500"></option>
-                    </template>
-                </select>
+            <div class="flex flex-wrap gap-3 text-xs items-center">
+                <div x-text="select.label" class="font-bold text-base mr-3"></div>
+                <template x-for="option in select.options">
+                    <div>
+                        <input type="checkbox" x-model="filters[select.slug]" x-bind:value="option.value"
+                            x-bind:id="`${select.slug}-${option.value}`" class="hidden" />
+                        <label 
+                        x-bind:for="`${select.slug}-${option.value}`" 
+                        x-text="option.label"
+                        class="border border-black font-bold px-6 py-2 rounded-3xl cursor-pointer transition-all capitalize my-1 block"
+                        x-bind:class="{
+                            'opacity-50': !filters[select.slug].includes(option.value),
+                            'bg-black text-white': filters[select.slug].includes(option.value)
+                        }"
+                        ></label>
+                    </div>
+                </template> 
             </div>
         </template>
         <div class="flex items-center gap-2">
-            <label class="font-bold" for="onlyFavorites">
-                Favoris uniquement ?
+            <label class="font-bold mr-3" for="onlyFavorites">
+                Favoris
             </label>
             <input type="checkbox" x-model="filters.onlyFavorites" name="onlyFavorites" id="onlyFavorites">
         </div>

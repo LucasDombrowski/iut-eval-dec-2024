@@ -9,10 +9,10 @@ export default function Recipes(favorites){
         difficulties : [],
         categories : [],
         filters: {
-            difficulty: null,
+            difficulties: [],
             title: "",
-            category: null,
-            timeInterval: null,
+            categories: [],
+            timeIntervals: [],
             onlyFavorites: false
         },
         favorites: favorites,
@@ -56,28 +56,34 @@ export default function Recipes(favorites){
             this.difficulties = Array.from(new Set([...this.recipes].map(({difficulty})=>difficulty)))
         },
         handleFiltersChanges(){
-            /* Check if one of the filter value is set to the STRING value 'null'*/
-            Object.entries({...this.filters}).forEach(([key,value])=>{
-                if(value==="null"){
-                    this.filters[key] = null
-                }
-            });
             this.filterRecipes();
+        },
+        addFilter(key,slug){
+            this.filters[key].push(slug);
+        },
+        removeFilter(key,slug){
+            this.filters[key] = this.filters[key].filter(v=>v!==slug);
         },
         filterRecipes(){
             this.filteredRecipes = [...this.recipes].filter((recipe)=>{
-                if(this.filters.difficulty && recipe.difficulty!==this.filters.difficulty){
+                if(this.filters.difficulties.length>0 && !this.filters.difficulties.includes(recipe.difficulty)){
                     return false;
                 }
                 if(this.filters.title && !recipe.title.includes(this.filters.title)){
                     return false;
                 }
-                if(this.filters.category && recipe.category !== this.filters.category){
+                if(this.filters.categories.length>0 && !this.filters.categories.includes(recipe.category)){
                     return false;
                 }
-                if(this.filters.timeInterval){
-                    const timeInterval = this.timeIntervals.find(({slug})=>slug===this.filters.timeInterval);
-                    if(timeInterval && !timeInterval.callback(recipe.preparationTime)){
+                if(this.filters.timeIntervals.length > 0){
+                    let available = false;
+                    for(let timeIntervalSlug of this.filters.timeIntervals){
+                        const timeInterval = this.timeIntervals.find(({slug})=>timeIntervalSlug===slug);
+                        if(timeInterval && timeInterval.callback(recipe.preparationTime)){
+                            available = true;
+                        }
+                    }
+                    if(!available){
                         return false;
                     }
                 }
