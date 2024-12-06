@@ -1,0 +1,40 @@
+<div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 mt-6">
+    <template x-for="(recipe,index) in filteredRecipes">
+        <div 
+        class="rounded-3xl overflow-hidden shadow-2xl hover:[&_img]:scale-110 hover:[&_img]:opacity-50 cursor-pointer relative"
+        @click="(e)=>{
+            if(!e.target.closest('.fav-button')){
+                setActiveRecipe(index);
+            }
+        }">
+            <div class="overflow-hidden bg-black">
+                <img x-bind:src="recipe.imageUrl" alt="Image d'illustration de la recette" class="w-full aspect-[4/3] transition-all duration-300 object-cover"/>
+            </div>
+            <div class="p-3 flex flex-col gap-2">
+                <div class="flex justify-between items-center flex-wrap">
+                    <h3>
+                        <span x-text="recipe.title" class="font-bold underline"></span>
+                        <span x-text="`(${recipe.difficulty})`" class="text-sm"></span>
+                    </h3>
+                    <div 
+                    x-text="recipe.category"
+                    class="capitalize text-blue-500 text-sm"></div>
+                </div>
+                <p>
+                    <span>Temps de préparation :</span>
+                    <span 
+                    x-text="`${recipe.preparationTime} minutes`"
+                    class="font-bold"></span>
+                </p>
+            </div>
+            <button class="fav-button bg-white size-8 aspect-square rounded-full absolute top-3 right-3 flex justify-center items-center z-30" @click="()=>{
+                toggleFavorite(recipe.id);
+            }">
+                <svg class="transition-all" x-bind:class="{
+                    'fill-red-500': favorites.includes(recipe.id),
+                    'opacity-50': !favorites.includes(recipe.id)
+                }" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path d="M18 1l-6 4-6-4-6 5v7l12 10 12-10v-7z"/></svg>
+            </button>
+        </div>
+    </template>
+</div>

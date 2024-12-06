@@ -1,0 +1,17 @@
+<swiper-container 
+pagination="true"
+x-on:swiperslidechange="setCurrentSlide"
+navigation-next-el=".custom-navigation-next"
+navigation-prev-el=".custom-navigation-prev"
+navigation="true"
+>
+    <template x-for="(instruction,index) in items">
+        <swiper-slide 
+        class="h-full text-center flex justify-center items-center italic min-h-[250px] transition-all duration-500"
+        x-bind:class="{
+            'opacity-0':index!==currentSlideIndex
+        }">
+            <p x-text="instruction"></p>
+        </swiper-slide>
+    </template>
+</swiper-container>

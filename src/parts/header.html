@@ -1,0 +1,27 @@
+<header x-data="Header(recipes.length)" class="flex items-center justify-between p-4 sticky top-0 bg-white z-40 mb-12">
+    <div class="uppercase font-bold text-xl z-50">
+        évaluation
+    </div>
+    <nav class="bg-white fixed w-full h-full top-0 left-0 z-40 flex justify-center items-center transition-all flex-col md:static md:translate-x-0 md:flex-row gap-6 md:gap-8 md:w-fit" 
+    x-bind:class="{
+        'translate-x-full':!active
+    }">
+        <ul class="flex flex-col items-center text-2xl font-bold gap-4 capitalize md:flex-row md:text-lg" x-data="HeaderNavigation()">
+            <template x-for="link in links">
+                <li>
+                    <a x-bind:href="link.href" x-text="link.label" class="block relative before:content-[''] before:absolute before:top-full before:left-0 before:w-full before:h-px before:bg-black before:scale-x-0 before:transition-all hover:before:scale-x-100"></a>
+                </li>
+            </template>
+        </ul>
+        <div>
+            Nombre total de recettes : <span x-text="recipes.length" class="font-bold"></span>
+        </div>
+    </nav>
+    <button class="relative size-8 z-50 md:hidden" @click="burgerClick">
+        <div 
+        class="absolute top-1/2 left-0 w-full h-[2px] bg-black -translate-y-1/2 before:content-[''] before:absolute before:w-full before:h-full before:bg-black before:top-0 before:left-1/2 before:-translate-x-1/2 before:-translate-y-3 after:content-[''] after:absolute after:w-full after:h-full after:bg-black after:-translate-x-1/2 after:translate-y-3 after:left-1/2 after:top-0 transition-all before:transition-all after:transition-all"
+        x-bind:class="{
+            'after:!translate-y-0 before:translate-y-0 after:rotate-45 before:-rotate-45 bg-transparent' : active
+        }"></div>
+    </button>
+</header>

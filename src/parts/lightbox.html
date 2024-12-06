@@ -1,0 +1,78 @@
+<div class="fixed top-0 left-0 w-full h-full bg-black/50 z-50 backdrop-blur p-6 flex justify-center items-center"
+    x-show="showLightbox" x-transition.scale x-transition.duration.500ms>
+    <template x-if="activeRecipe">
+        <div class="bg-white w-full p-3 max-h-[90%] overflow-hidden flex flex-col max-w-[800px]">
+            <div class="grow flex flex-col overflow-hidden">
+                <div class="flex items-center justify-between sticky top-0 bg-white py-2 px-3">
+                    <h2 x-text="activeRecipe.title" class="font-bold text-lg">
+                    </h2>
+                    <button @click="cancelActiveRecipe"
+                        class="size-6 relative after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:w-full after:h-px after:bg-black after:rotate-45 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-px before:bg-black before:-rotate-45 transition-all hover:opacity-50">
+                    </button>
+                </div>
+                <div class="grow overflow-y-scroll mt-3 px-3">
+                    <div>
+                        <img x-bind:src="activeRecipe.imageUrl" alt="Image d'illustration de la recette"
+                            class="w-full aspect-[21/9] object-cover" />
+                    </div>
+                    <div class="flex items-center text-sm justify-between mt-3">
+                        <div x-text="activeRecipe.category" class="text-blue-500 capitalize">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="size-4">
+                                <svg fill="#000000" height="100%" width="100%" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+                                    <g>
+                                        <g>
+                                            <path
+                                                d="M256,0C114.842,0,0,114.842,0,256s114.842,256,256,256s256-114.842,256-256S397.158,0,256,0z M374.821,283.546H256    c-15.148,0-27.429-12.283-27.429-27.429V137.295c0-15.148,12.281-27.429,27.429-27.429s27.429,12.281,27.429,27.429v91.394h91.392    c15.148,0,27.429,12.279,27.429,27.429C402.249,271.263,389.968,283.546,374.821,283.546z" />
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div x-text="`${activeRecipe.preparationTime} minutes`"></div>
+                        </div>
+                    </div>
+                    <ul class="text-sm mt-3">
+                        <template x-for="ingredient in activeRecipe.ingredients">
+                            <li>
+                                <span x-text="`${ingredient.name} - `" class="capitalize"></span>
+                                <span x-text="`${ingredient.quantity} ${ingredient.unit}`" class="font-bold"></span>
+                            </li>
+                        </template>
+                    </ul>
+                    <div class="mt-3" x-data="Swiper(activeRecipe.instructions)">
+                        <h3 class="font-bold mb-3">
+                            Étapes
+                        </h3>
+                        <h4 x-text="`Étape ${currentSlideIndex + 1}`" class="text-center font-bold text-blue-500"></h4>
+                        <div class="w-full h-3 border border-black rounded-3xl mt-3 relative overflow-hidden">
+                            <div 
+                            class="w-full h-full bg-blue-500 absolute top-0 left-0 transition-all"
+                            x-bind:style="{
+                                'maxWidth': `${getProgressPercentage()}%`
+                            }"></div>
+                        </div>
+                        <div class="relative">
+                            <load src="/src/parts/swiper.html"/>
+                            <button class="custom-navigation-next absolute top-1/2 right-3 -translate-y-1/2 z-50 transition-all [&:not(.swiper-button-disabled)]:hover:text-blue-500">
+                                <svg fill="currentColor" height="16px" width="16px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                                    <path id="XMLID_222_"
+                                        d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z" />
+                                </svg>
+                            </button>
+                            <button class="custom-navigation-prev absolute top-1/2 left-3 -translate-y-1/2 z-50 transition-all [&:not(.swiper-button-disabled)]:hover:text-blue-500">
+                                <svg class="-scale-x-100" fill="currentColor" height="16px" width="16px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                                    <path id="XMLID_222_"
+                                        d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>

@@ -7,8 +7,16 @@
     <title>Vite App</title>
 </head>
 <body>
-<div id="app">
-    <!-- content here -->
+<div id="app" x-data="Recipes($persist([]))" x-init="$watch('filters',()=>handleFiltersChanges())">
+    <load src="./src/parts/header.html"/>
+    <main class="px-6">
+        <div class="max-w-[1280px] mx-auto">
+            <h2 class="font-bold text-3xl mb-6">Recettes <span x-text="`(${filteredRecipes.length} recettes)`" class="text-base"></span></h2>
+            <load src="./src//parts/filters.html"/>
+            <load src="./src/parts/recipes.html"/>
+            <load src="./src/parts/lightbox.html"/>
+        </div>
+    </main>
 </div>
 <script type="module" src="/src/main.js"></script>
 </body>
