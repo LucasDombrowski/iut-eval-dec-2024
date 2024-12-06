@@ -102,6 +102,15 @@ export default function Recipes(favorites){
         delFavorite(idToRemove){
             this.favorites = this.favorites.filter((id)=>id!==idToRemove);
         },
+        getDifficultyRank(difficulty){
+            if(difficulty==="facile"){
+                return 1;
+            }
+            if(difficulty==="moyenne"){
+                return 2;
+            }
+            return 3;
+        },
         toggleFavorite(id){
             if(this.favorites.includes(id)){
                 this.delFavorite(id);
